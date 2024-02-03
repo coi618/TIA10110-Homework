@@ -1,6 +1,7 @@
 package hw1;
 
-import java.lang.Math;
+// Doesn't need import Math
+//import java.lang.Math;
 
 public class Hw1 {
 	public static void main(String[] args) {

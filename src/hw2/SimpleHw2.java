@@ -81,5 +81,41 @@ public class SimpleHw2 {
 			}
 			System.out.println();
 		}
+		
+		// 9x9
+		// 1. for + while
+		System.out.println("\n9x9\n1. for + while");
+		for (int i = 1; i < 10; i++) {
+			int j = 1;
+			while (j < 10) {
+				System.out.print(j + "*" + i + "=" + i * j + "\t");
+				j++;
+			}
+			System.out.println();
+		}
+
+		// 2. for + do...while
+		System.out.println("\n2. for + do...while");
+		for (int i = 1; i < 10; i++) {
+			int j = 1;
+			do {
+				System.out.print(j + "*" + i + "=" + i * j + "\t");
+				j++;
+			} while (j < 10);
+			System.out.println();
+		}
+
+		// 3. while + do...while
+		System.out.println("\n3. while + do...while");
+		int i = 1;
+		while (i < 10) {
+			int j = 1;
+			do {
+				System.out.print(j + "*" + i + "=" + i * j + "\t");
+				j++;
+			} while (j < 10);
+			i++;
+			System.out.println();
+		}
 	}
 }
