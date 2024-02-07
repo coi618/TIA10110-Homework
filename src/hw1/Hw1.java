@@ -56,9 +56,9 @@ public class Hw1 {
 		// Formula: FV = PV * (1+i)^n (n is 10 years)
 		int presentValue = 1_500_000;
 		double interest = 1.02;
-		double valueSquare = interest * interest;
-		double valueQuadra = valueSquare * valueSquare;
-		double value10Pow = valueQuadra * valueQuadra * valueSquare;
+		double value10Pow = 1.0;
+		for (int i = 1; i <= 10; i++) 
+			value10Pow *= interest;
 		double futureValue = presentValue * value10Pow;
 		System.out.println("1.5m * (1.02)^10 = " + futureValue);
 
