@@ -5,18 +5,18 @@ import java.util.Scanner;
 public class SimpleHw3 {
 
 	public static void main(String[] args) {
-		// Hw 3-1. 三角形判斷 Level 1
-		System.out.println("Hw 3-1: 判斷三角形 Level-1\n");
+		// Hw 3-1. 三角形判斷 Level 2
+		System.out.println("Hw 3-1: 判斷三角形 Level-2\n");
 		triangleJudgment();
 		
 		/***************************************************/
-		// Hw 3-2: 猜數字 (0~9) Level-1
-		System.out.println("\n\nHw 3-2: 猜數字 Level-1\n");
+		// Hw 3-2: 猜數字 (0~9) Level-2
+		System.out.println("\n\nHw 3-2: 猜數字 Level-2\n");
 		guessNumber();
 		
 		/***************************************************/
 		// Hw 3-3. 進階大樂透 Level-1
-		System.out.println("\n\nHw 3-3: 進階大樂透 Level-1\n");
+		System.out.println("\n\nHw 3-3: 進階大樂透 Level-2\n");
 		playLottery();
 		
 		/***************************************************/
@@ -31,7 +31,7 @@ public class SimpleHw3 {
 		int side[] = new int[3];
 			
 		// 提示、接收使用者輸入
-		System.out.println("Please enter 3 side(positive integer):");
+		System.out.println("請輸入三個整數：");
 		for(int i = 0; i < side.length; i++) 
 			side[i] = askSide(); 
 		
@@ -49,9 +49,18 @@ public class SimpleHw3 {
 			System.out.println("是一個正三角形");
 	
 		// 判斷3. 等腰三角形
-		else if(isIsoscTri(side)) 
+		else if(isIsoscTri(side)) {
 			System.out.println("是一個等腰三角形");
-	
+			// 同時為等腰三角形與直角三角形的情況 (1, 1, √2)
+			// 雖然無法在本題中算到，還是保留邏輯運算過程
+			if(isRightTri(side))
+				System.out.println("也是一個直角三角形");
+		}
+		
+		// 判斷4. 直角三角形
+		else if(isRightTri(side))
+			System.out.println("是一個直角三角形");
+		
 		// 以上皆不符合者判定為其他
 		else
 			System.out.println("是一個一般的三角形");
@@ -62,7 +71,7 @@ public class SimpleHw3 {
 		Scanner sc = new Scanner(System.in);
 		// 檢查輸入不是整數的情況
 		while(!sc.hasNextInt()) {
-			System.out.println("Not integer, retype: ");
+			System.out.println("請輸入數字： ");
 			sc = new Scanner(System.in);
 		}
 		return sc.nextInt();
@@ -93,6 +102,13 @@ public class SimpleHw3 {
 		return (side[0] == side[1] || side[1] == side[2] ? true : false);
 	}
 
+	public static boolean isRightTri(int[] side) {
+		int result = -1;
+		// side[0]^2 + side[1]^2 == side[2]^2 
+		result = Integer.compare((side[0]*side[0])+(side[1]*side[1]), (side[2]*side[2]));
+		return (result == 0);
+	}
+	
 	/***************************************************/
 	// Method for 3-2
 	public static void guessNumber() {
@@ -115,21 +131,24 @@ public class SimpleHw3 {
 			if(compareResult == 0) {
 				System.out.println("答對了！答案就是 " + answer);
 				break;
-			} else
-				System.out.println("猜錯了");
+			} else {
+				System.out.print("猜錯了，");
+				// 如果比較的結果 > 0，表示使用者猜得比答案大。< 0 表示猜得比答案小
+				// 依照比較的結果是否 > 0 ? 是->提示再小一些 : 否-> 提示再大一些 
+				System.out.println("再" + (compareResult > 0 ? "小" : "大") + "一些。");
+			}
 		} // end of while loop
 		
-		// Debug: 提示 Hw 3-2 結束
-		//System.out.println("Hw 3-2 Finish."); 
+		//System.out.println("Hw 3-2 Finish."); // Debug: 提示 Hw 3-2 結束
 	}
 
-	private static int getUserGuess() {
+	public static int getUserGuess() {
 		// 詢問使用者輸入數字 0~9
-		System.out.print("Enter a number between 0~9: ");
+		System.out.print("請輸入一個 0~9 的數字： ");
 		Scanner sc = new Scanner(System.in);
 		// 判斷輸入不是整數的情況
 		while(!sc.hasNextInt()) {
-			System.out.print("Please enter an integer: ");
+			System.out.print("請輸入數字!!： ");
 			sc = new Scanner(System.in);
 		}
 		return sc.nextInt();
@@ -137,9 +156,7 @@ public class SimpleHw3 {
 	
 	/***************************************************/
 	// Method for 3-3
-	private static void playLottery() {
-		// 提示：開始遊戲
-		System.out.println("Hw 3-3:");
+	public static void playLottery() {
 		// 要求使用者輸入數字 (1~9)
 		int hateNum = askUserHate();
 		
@@ -161,9 +178,14 @@ public class SimpleHw3 {
 		// 輸出可選數字 (輸出陣列)
 		printArray(optionNum);
 		System.out.printf("\n總共有%d數字可選\n", optCount);
+		
+		int[] pick = pickUpNumbers(optionNum, optCount);
+		System.out.println("選取號碼為: ");
+		for(int p : pick)
+			System.out.print(p + " ");
 	}
 
-	private static int askUserHate() {
+	public static int askUserHate() {
 		System.out.println("阿文...請輸入你討厭哪個數字？");
 		Scanner sc = new Scanner(System.in);
 		while(!sc.hasNextInt()) {
@@ -174,7 +196,7 @@ public class SimpleHw3 {
 		return sc.nextInt();
 	}
 
-	private static void printArray(int[] intArray) {
+	public static void printArray(int[] intArray) {
 		// int 預設為 0，遇到 0 表示可選取範圍結束
 		for(int i = 0; intArray[i] != 0; i++) {
 			// 換行前置，後置換行版型會跑掉
@@ -185,5 +207,36 @@ public class SimpleHw3 {
 		System.out.println();
 	}
 	
+	public static int[] pickUpNumbers(int[] optionNum, int optCount) {
+		// 為了不影響原本的陣列，複製一個新的陣列
+		int[] pickUp = Arrays.copyOf(optionNum, optCount);
+		// 宣告選取的陣列 (open[6])
+		int[] pick = new int[6];
+		// 宣告索引
+		int index;
+		// 選出 6 個號碼
+		for(int i = 0; i < 6; i++) {
+			// 在 optCount 的範圍內選出 1 個號碼，放到 pick 陣列中
+			index = (int)(Math.random() * optCount);
+			pick[i] = pickUp[index];
+			// 將選到的值與 Array 最後的值交換，然後對選取範圍-1 (optCount--)
+			swap(pickUp, index, --optCount); 
+			/* 	optCount 是 Array 的長度，比 Array 最後的 index 大 1
+				所以要先減 1 才符合 Array 長度。
+				剛好後續需要將 optCount -1，就在這裡一併處理掉
+			*/
+		}
+		// 不在乎順序，所以回傳前排序一下
+		Arrays.sort(pick);
+		
+		return pick;
+	}
+
+	public static void swap(int[] pickUp, int index, int end) {
+		// 宣告一個暫存 int，提供交換使用。以下將Array 中 index 與最後的值交換
+		int tmp = pickUp[index];
+		pickUp[index] = pickUp[end];
+		pickUp[end] = tmp;
+	}
 } // End of SimpleHw3 class
 
