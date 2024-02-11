@@ -11,10 +11,6 @@ public class DriveHw3_3 {
 		// Create Player p and assign hate number for it
 		var p = new Player(num);
 
-		// Print prompt
-		System.out.print("Your hate number is ");
-		// Print player's hate number
-		System.out.print(p.getHateNumber());
 		// Print option number table
 		p.getOptionNumTable();
 		// Print how many numbers player can choose
@@ -27,11 +23,11 @@ public class DriveHw3_3 {
 		System.out.println("Program end");
 	}
 
-	// Check player input
+	// Check player's input
 	private static int askUserHate() {
 		// Set a num for return hate number
 		int num;
-		// Print prompt
+		// Print prompts
 		System.out.println("Input a number you don't want to choose: ");
 		// Infinite loop, break when player input number between 1~9
 		while (true) {
@@ -44,7 +40,7 @@ public class DriveHw3_3 {
 				if (num > 0 && num < 10) {
 					return num;
 				}
-				// If num not between 1~9, print prompt and ask player input
+				// If num not between 1~9, print prompts and ask player input
 				System.out.println("Please enter number between 1~9:");
 				// Restart loop
 				continue;
@@ -53,5 +49,4 @@ public class DriveHw3_3 {
 			System.out.println("Please enter an INTEGER: ");
 		}
 	}
-
 }

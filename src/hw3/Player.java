@@ -2,33 +2,25 @@ package hw3;
 import java.util.Arrays;
 
 public class Player {
-	// Instance Variable
-	
+	// Instance Variable	
 	// The number player hate
-	int hateNum;
-	
+	int hateNum;	
 	// The table player can choose
-	int[] optionNum = new int[49];
-	
+	int[] optionNum = new int[49];	
 	// Numbers of choose table count
-	int optCount;
-	
+	int optCount;	
 	// A 6 numbers array which player pick up 
 	int[] pickUp = new int[6];
 	
 	// Constructor
-	public Player() {}
-	
 	public Player(int hateNum) {
 		// Get hateNum when create player
-		this.hateNum = hateNum;
-		
+		this.hateNum = hateNum;	
 		// Set up option table, also get optCount
 		setOptionNumTable();
 	}
 	
 	// Method
-	
 	public void setHateNumber(int hateNum) {
 		this.hateNum = hateNum;
 	}
@@ -46,7 +38,7 @@ public class Player {
 				// (i >= 10) deal if hateNum = 0, 1~9 will not choose bug
 				continue;
 			}
-			// Also calculate optCount
+			// Put numbers to table, also calculate optCount
 			optionNum[optCount++] = i;
 		}
 	}
@@ -71,13 +63,22 @@ public class Player {
 		int[] pickUpTmp = Arrays.copyOf(optionNum, optCount);
 		// Set index for pick up & swap  
 		int index;
-		
+		// Pick up 6 numbers
 		for (int i = 0; i < 6; i++) {
+			// Random get an index
 			index = (int)(Math.random() * optCount);
+			// Pick up pickUpTmp[index] as a pickup number
 			pickUp[i] = pickUpTmp[index];
+			// Swap this number with the latest number, also optCount -1
+			// optCount need subtract first, then swap item.
 			swap(pickUpTmp, index, --optCount);
+			/*
+			 * Once pick up a number, swap this number with latest number
+			 * and decrease pick up range with 1, so next time pick will 
+			 * guarantee not pick up the same numbers again. 
+			 */
 		}
-		
+		// After pick up finish, sort array. Just for pretty.
 		Arrays.sort(pickUp);
 	}
 	
@@ -93,7 +94,7 @@ public class Player {
 		 * A = A ^ B => A = 2 (0b 0000_0010)
 		 */
 	}
-	
+
 	public void printPickUp() {
 		System.out.println("Your pick up numbers are:");
 		// Print each pick up number with space
@@ -102,5 +103,4 @@ public class Player {
 		}
 		System.out.println();
 	}
-	
 }

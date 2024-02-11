@@ -7,8 +7,8 @@ public class DriveHw3_1 {
 	public static void main(String[] args) {
 		// Get sides from user
 		int[] side = new int[3];
-		for (int s = 0; s < side.length; s++)
-			side[s] = inputSide();
+		System.out.println("Please enter integer for triangle's sides:");
+		inputSide(side);
 
 		// Declare a triangle with sides
 		var myTri = new Triangle(side);
@@ -18,34 +18,29 @@ public class DriveHw3_1 {
 		System.out.println("\nProgram end.");
 	}
 
-	private static int inputSide() {
-		// Declare an int for return
-		int num;
-		// Check until user input integer
-		while (true) {
-			// Ask user to input a number
-			System.out.println("Please enter an integer for triangle's sides:");
-			Scanner sc = new Scanner(System.in);
-			// If user's input not an integer, ask user to input integer and restart loop
+	private static void inputSide(int[] side) {
+		Scanner sc = new Scanner(System.in);
+		for (int i = 0; i < side.length; i++) {
+			// If input is not integer
 			if (!sc.hasNextInt()) {
-				System.out.println("Please enter INTEGER!");
-				continue;
+				// Print prompts to input Integer
+				System.out.println("Please enter an INTEGER: ");
+				// Prepare Scanner
+				sc = new Scanner(System.in);
+				// Reset index to 0, forget all input before
+				i = -1; // after i++, i = 0
+			} else {
+				// If input integer, write to side[]
+				side[i] = sc.nextInt();
 			}
-			// If user input an integer, assign it to num
-			num = sc.nextInt();
-			// Close sc, just don't want to see warning
-			// sc.close();
-			// Cannot close(), will become infinite loop
-
-			// break from loop
-			break;
 		}
-		return num;
+		sc.close();
 	}
 
 	private static void checkTriType(Triangle myTri) {
 		// Show each sides, let user check triangle easily
-		System.out.printf("(%d, %d, %d)", myTri.shortSide, myTri.middleSide, myTri.longSide);
+		System.out.printf("(%d, %d, %d)", 
+				myTri.shortSide, myTri.middleSide, myTri.longSide);
 
 		// Check conditions from strict to loose
 		// Check 1. Is triangle or not

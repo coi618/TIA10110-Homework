@@ -9,7 +9,7 @@ public class SimpleHw3 {
 		// Hw 3-1. 三角形判斷 Level-2
 		System.out.println("Hw 3-1: 判斷三角形 Level-2\n");
 		triangleJudgment();
-		
+
 		/***************************************************/
 		// Hw 3-2: 猜數字 (0~9) Level-2
 		System.out.println("\n\nHw 3-2: 猜數字 Level-2\n");
@@ -33,8 +33,7 @@ public class SimpleHw3 {
 
 		// 提示、接收使用者輸入
 		System.out.println("請輸入三個整數：");
-		for (int i = 0; i < side.length; i++)
-			side[i] = askSide();
+		askSide(side);
 
 		// 在判斷前，排序邊長
 		Arrays.sort(side);
@@ -68,14 +67,24 @@ public class SimpleHw3 {
 
 	} // End triangleJudgment()
 
-	public static int askSide() {
+	public static void askSide(int[] side) {
+		// 準備輸入
 		Scanner sc = new Scanner(System.in);
-		// 檢查輸入不是整數的情況
-		while (!sc.hasNextInt()) {
-			System.out.println("請輸入數字： ");
-			sc = new Scanner(System.in);
+		// 依序輸入三邊
+		for (int i = 0; i < side.length; i++) {
+			// 如果輸入非整數的情況
+			if (!sc.hasNextInt()) {
+				// 提示輸入整數
+				System.out.println("請輸入整數:");
+				// 重新準備輸入
+				sc = new Scanner(System.in);
+				// 重設索引，前面輸入做廢
+				i = -1; // i++ 執行後 i = 0
+			} else {
+				// 輸入整數的情況，依序寫入邊長
+				side[i] = sc.nextInt();
+			}
 		}
-		return sc.nextInt();
 	}
 
 	public static boolean isTriangle(int[] side) {
@@ -116,17 +125,21 @@ public class SimpleHw3 {
 	/***************************************************/
 	// Method for 3-2
 	public static void guessNumber() {
+		final int MIN = 0, MAX = 100;
+		int range = MAX - MIN + 1;
 		// 開始遊戲
 		System.out.println("開始猜數字吧！");
 
 		// 亂數產生一個答案
-		int answer = (int) (Math.random() * 10);
+		int answer = (int) (Math.random() * range);
 
 //		System.out.println("Debug: Answer = " + answer);
 
 		// 宣告比對結果變數：因為 0 為相同，預設使用 -1
 		int compareResult = -1;
 
+		// 詢問使用者輸入數字 MIN~MAX
+		System.out.printf("請輸入一個 %d~%d 的數字： ", MIN, MAX);
 		// 建立無窮迴圈，當使用者猜中數字時結束
 		while (true) {
 			// 詢問使用者猜測，並與答案比較
@@ -147,8 +160,7 @@ public class SimpleHw3 {
 	}
 
 	public static int getUserGuess() {
-		// 詢問使用者輸入數字 0~9
-		System.out.print("請輸入一個 0~9 的數字： ");
+
 		Scanner sc = new Scanner(System.in);
 		// 判斷輸入不是整數的情況
 		while (!sc.hasNextInt()) {
@@ -205,12 +217,10 @@ public class SimpleHw3 {
 
 	public static void printArray(int[] intArray) {
 		/*
-		 * 1. int 預設為 0，遇到 0 表示可選取範圍結束 
-		 * 2. 因為沒做範圍檢查，如果所有數字都可選(EX: hateNum = -1) 改用陣列長度作結束
-		 * 3. 如果出現超出範圍的情況，先檢查 intArray[i] != 0 會超過 Array 長度 
-		 *    因此 i < intArray.length 需先做判斷
+		 * 1. int 預設為 0，遇到 0 表示可選取範圍結束 2. 因為沒做範圍檢查，如果所有數字都可選(EX: hateNum = -1) 改用陣列長度作結束
+		 * 3. 如果出現超出範圍的情況，先檢查 intArray[i] != 0 會超過 Array 長度 因此 i < intArray.length 需先做判斷
 		 */
-		//System.out.println("Debug: Array.length = " + intArray.length);
+		// System.out.println("Debug: Array.length = " + intArray.length);
 		for (int i = 0; i < intArray.length && intArray[i] != 0; i++) {
 			// 換行前置，後置換行版型會跑掉
 			if (i % 6 == 0)
@@ -232,14 +242,14 @@ public class SimpleHw3 {
 			// 在 optCount 的範圍內選出 1 個號碼，放到 pick 陣列中
 			index = (int) (Math.random() * optCount);
 			pick[i] = pickUp[index];
-			// 將選到的值與 Array 最後的值交換，然後對選取範圍-1 (optCount--)
+			// 對選取範圍-1 (--optCount)，然後將選到的值與 Array 最後的值交換
 			swap(pickUp, index, --optCount);
 			/*
 			 * optCount 是 Array 的長度，比 Array 最後的 index 大 1 所以要先 -1 才符合 Array 最後的 index 值。
 			 * 剛好後續需要將 optCount -1 縮小選取範圍，就在這裡一併處理掉
 			 */
 		}
-		// 不在乎順序，所以回傳前排序一下
+		// 不在乎順序，所以回傳前排序一下，顯示較為直覺
 		Arrays.sort(pick);
 
 		return pick;

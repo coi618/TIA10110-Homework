@@ -25,8 +25,8 @@ public class Triangle {
 	}
 
 	public boolean isTriangle() {
-		// (1). A side <= 0 is not a triangle, since sides already sort, just check
-		// shortSide
+		// (1). A side <= 0 is not a triangle, since sides already sort,
+		// just check shortSide
 		if (shortSide <= 0)
 			return false;
 		// (2). 2 sides' sum(short + middle) > another side (long)
@@ -43,19 +43,21 @@ public class Triangle {
 
 	public boolean isEquilTri() {
 		// All sides are the same? Yes -> return true : No -> return false
-		return (shortSide == middleSide && middleSide == longSide) ? true : false;
+		return (shortSide == middleSide && middleSide == longSide) 
+				? true : false;
 	}
 
 	public boolean isIsoscTri() {
 		// 2 sides equals? Yes -> return true : No -> return false
-		return (shortSide == middleSide || middleSide == longSide ? true : false);
+		return (shortSide == middleSide || middleSide == longSide) 
+				? true : false;
 	}
 
 	public boolean isRightTri() {
-		// short side
-		int result = -1;
-		// side[0]^2 + side[1]^2 == side[2]^2
-		result = Double.compare(Math.pow(shortSide, 2) + Math.pow(middleSide, 2), Math.pow(longSide, 2));
+		// Square of short side add square of middle side
+		// equal to square of long side
+		int result = Double.compare(Math.pow(longSide, 2),
+				Math.pow(shortSide, 2) + Math.pow(middleSide, 2));
 		return (result == 0);
 	}
 
