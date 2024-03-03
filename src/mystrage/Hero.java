@@ -1,6 +1,7 @@
 package mystrage;
 // 問題: 設定為 abstract 有沒有差?
-public abstract class Hero {
+//public abstract class Hero {
+public class Hero {
 	// 省略 getter/setter...
 	
 	private String name;
