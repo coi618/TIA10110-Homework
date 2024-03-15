@@ -15,6 +15,10 @@ import java.util.Scanner;
 import java.util.Set;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.util.List;
+import java.util.ArrayList;
 
 public class SimpleHw7 {
 	/* For OS mapping values */
@@ -22,6 +26,7 @@ public class SimpleHw7 {
 	public static final int WINDOWS = 1;
 	public static final int LINUX = 2;
 
+	/* Main */
 	public static void main(String[] args) throws IOException {
 		
 		// Hw 7-1. 讀取檔案資訊
@@ -43,10 +48,18 @@ public class SimpleHw7 {
 //				+ "第一個參數所代表的檔案會複製到第二個參數代表的檔案");
 //		doCopyFile();
 		
+		// Hw 7-4
 		System.out.println("\n\nHw 7-4: 請寫一支程式，利用老師提供的Dog與Cat類別分別產生兩個物件，"
 				+ "\n\t寫到C:\\data\\Object.ser裡。(MAC: ~/data/Object.ser)"
 				+ "\n\t注意物件寫入需注意的事項，若C:\\內沒有data資料夾，請用程式新增這個資料夾");
-		saveObj();
+		String path = saveObj();
+		
+		// Hw 7-5
+		/* */
+		System.out.println("\n\nHw 7-5: 承上題，請寫一個程式，能讀取Object.ser這四個物件，"
+				+ "\n\t並執行speak()方法觀察結果如何 (請利用多 型簡化本題的程式設計)");
+		
+		loadObj(path);
 		
 		System.out.println("Hw7 結束");
 	}
@@ -237,7 +250,7 @@ public class SimpleHw7 {
 	}
 
 	// Method for 7-4  /*  */
-	private static void saveObj() throws IOException {
+	private static String saveObj() throws IOException {
 		// TODO Auto-generated method stub
 		/* 1. Class Dog, Cat 加上 Serializable */
 		/* 2. 呼叫貓狗，各建立兩個物件(lino, taro, puppy, fox) */
@@ -266,7 +279,9 @@ public class SimpleHw7 {
 		
 		/* 5. 將物件存入檔案 */
 		storeObj(path, dog, cat);
-		/*  */
+		
+		/* 6. 回傳檔案路徑 */
+		return path;
 	}
 
 	private static int checkOS() {
@@ -319,7 +334,7 @@ public class SimpleHw7 {
 		/* 3. call&return checkPath() */
 		/*  */
 		File current = new File("");
-		System.out.println(current.getAbsolutePath());
+//		System.out.println(current.getAbsolutePath());
 		String currPath = current.getAbsolutePath();
 //		currPath = "/Users/coi618/javawork/tmp";
 		/* 取得 MAC 的家目錄: 以 String path = getAbsolutePath()
@@ -377,15 +392,75 @@ public class SimpleHw7 {
 
 		/* 開啟檔案，準被儲存資料 */ /* throws Exception, why ? */
 		var oos = new ObjectOutputStream(new FileOutputStream(new File(path)));
+//		
+		/* 做法一 : 單物件存入檔案 > 讀檔時不知道有幾個 */
 		/* 把狗物件存入檔案 */
-		for (int i = 0; i < dog.length; i++) {
-			oos.writeObject(dog[i]);
+//		for (int i = 0; i < dog.length; i++) {
+//			oos.writeObject(dog[i]);
+//		}
+//		/* 把貓物件存入檔案 */
+//		for (int i = 0; i < cat.length; i++) {
+//			oos.writeObject(cat[i]);
+//		}
+		
+		/* 做法二: 先把物件存在 ArrayList, 讀檔時讀 ArrayList */
+		/* 建立物件 ArrayList */
+		List<ISpeakable> speaker = new ArrayList<ISpeakable>();
+		/* 把狗物件存入ArrayList */
+//		for (int i = 0; i < dog.length; i++) {}
+		for (Dog index : dog ) {
+			speaker.add(index);
 		}
-		/* 把貓物件存入檔案 */
-		for (int i = 0; i < cat.length; i++) {
-			oos.writeObject(cat[i]);
+		/* 把貓物件存入ArrayList */
+		for (Cat index : cat ) {
+			speaker.add(index);
 		}
+		
+		/* 把 ArrayList 物件存入檔案 */
+		oos.writeObject(speaker);
+		
 		/* 關閉檔案 */
 		oos.close();
+	}
+
+	// Method for 7-5  /*  */
+	private static void loadObj(String path) throws IOException {
+		// TODO 從 .ser 檔中讀出物件，並呼叫其 speak()
+		/* 1. 取得檔案位置 */
+		/* 2. 建立物件 ArrayList */
+		/* 3. 讀取: 物件->List */
+		/* 4. 呼叫每個物件 speak() */
+
+		/* 1. 取得檔案位置 */
+		ObjectInputStream ois;
+		try {
+			ois = new ObjectInputStream(new FileInputStream(new File(path)));
+			/* 2. 建立物件 ArrayList */
+			List<ISpeakable> speaker;
+			/* 3. 讀取: 物件->List */
+			Object obj = ois.readObject();
+//			System.out.println(obj.getClass());
+//			System.out.println((obj instanceof ArrayList ? "obj instanceof ArrayList" : "NO"));
+
+			/* Error: Type Object cannot be safely cast to List<ISpeakable> */
+//			if (obj instanceof List<ISpeakable>) { 
+			if (obj instanceof ArrayList) {
+				speaker = (List<ISpeakable>) obj;
+			
+				/* 4. 呼叫每個物件 speak() */
+				for (int i = 0; i < speaker.size(); i++) {
+					speaker.get(i).speak();
+				}
+			} else {
+				System.out.println("Read Object wrong!! Check the .ser file store.");
+			}
+
+			/* End: close */
+			ois.close();
+		} catch (FileNotFoundException fnfe) {
+			fnfe.printStackTrace();
+		} catch (ClassNotFoundException cnfe) {
+			cnfe.printStackTrace();
+		}
 	}
 }

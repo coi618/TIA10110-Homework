@@ -2,7 +2,7 @@ package hw7;
 
 import java.io.Serializable;
 
-public class Dog implements Serializable {
+public class Dog implements Serializable, ISpeakable {
 	private String name;
 	
 	public Dog(String name) {
