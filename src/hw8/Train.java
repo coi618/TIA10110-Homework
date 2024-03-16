@@ -13,7 +13,7 @@ public class Train implements Comparable<Train> {
 	/* 建構子 */
 	Train() {}
 	Train(int number, String type, String start, String dest, double price) {
-		super();
+		this();
 		setNumber(number);
 		setType(type);
 		setStart(start);
@@ -82,7 +82,7 @@ public class Train implements Comparable<Train> {
 			   "\tstart=" + start + "\tdest=" + dest + "\tprice=" + price + "]";
 	}
 	
-	/* Bug: 未實作 equals(), hashCode()*/
+	/* Bug: 未實作 equals(), hashCode() -> 被淺出了*/
 	@Override
 	public int hashCode() {
 		return Objects.hash(number);
